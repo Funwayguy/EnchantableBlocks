@@ -21,6 +21,17 @@ apply plugin: 'forge'
 apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
 
+shadow {
+    classifier = 'shadowed' // My mod jar ends up as build/distributions/Forcecraft-1.7.2-0.2.0-mod.jar
+    artifactSet {
+        include 'enchantableblocks' // My mod's main package
+    }
+    relocation {
+        pattern = 'javassist'
+        shadedPattern = 'enchantableblocks.javassist'
+    }
+}
+
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
 
@@ -47,6 +58,15 @@ artifacts {
         archives deobfJar
 }
 
+configurations {
+    external
+    compile.extendsFrom external
+}
+
 dependencies {
-    compile files("src/main/resources/javaassist/javassist.jar")
+    external files("src/main/resources/javaassist/javassist.jar")
+}
+
+jar {
+    from { configurations.external.collect { it.isDirectory() ? it : zipTree(it) } }
 }
