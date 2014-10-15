@@ -70,3 +70,5 @@ dependencies {
 jar {
     from { configurations.external.collect { it.isDirectory() ? it : zipTree(it) } }
 }
+
+build.dependsOn shadowJar
