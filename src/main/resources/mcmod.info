@@ -1,0 +1,14 @@
+[{
+    "modid": "enchantableblocks",
+    "name": "EnchantableBlocks",
+    "description": "",
+    "version": "ENCH_BLOCKS_KEY",
+    "mcversion": "1.7.10",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["Funwayguy","Siyliss"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+}]
