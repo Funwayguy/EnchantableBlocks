@@ -22,6 +22,17 @@ apply plugin: 'forge'
 apply plugin: 'java'
 apply plugin: 'shadow'
 
+shadow {
+    classifier = 'shadowed'
+    artifactSet {
+        include 'enchantableblocks' // Mod's main package
+    }
+    relocation {
+        pattern = 'javassist'
+        shadedPattern = 'enchantableblocks.javassist'
+    }
+}
+
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
 
@@ -57,4 +68,4 @@ dependencies {
     external files("src/main/resources/javaassist/javassist.jar")
 }
 
-build.dependsOn shadowJar
+// build.dependsOn shadowJar
