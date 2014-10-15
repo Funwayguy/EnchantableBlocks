@@ -58,17 +58,8 @@ artifacts {
         archives deobfJar
 }
 
-configurations {
-    external
-    compile.extendsFrom external
-}
-
 dependencies {
-    external files("src/main/resources/javaassist/javassist.jar")
-}
-
-jar {
-    from { configurations.external.collect { it.isDirectory() ? it : zipTree(it) } }
+    compile files("src/main/resources/javaassist/javassist.jar")
 }
 
 build.dependsOn shadowJar
