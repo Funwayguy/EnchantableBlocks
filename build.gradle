@@ -45,5 +45,5 @@ artifacts {
 }
 
 dependencies {
-    classpath files("src/main/resources/javaassist/javassist.jar")
+    compile files("src/main/resources/javaassist/javassist.jar")
 }
