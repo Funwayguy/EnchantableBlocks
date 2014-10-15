@@ -12,7 +12,6 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-        classpath files('src/main/resources/javaassist/javassist.jar')
     }
 }
 
@@ -43,4 +42,8 @@ task deobfJar(type: Jar) {
  
 artifacts {
         archives deobfJar
+}
+
+dependencies {
+    classpath files("src/main/resources/javaassist/javassist.jar")
 }
