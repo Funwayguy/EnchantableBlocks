@@ -13,6 +13,7 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.1.1'
     }
 }
@@ -47,6 +48,16 @@ artifacts {
         archives deobfJar
 }
 
+configurations {
+    external
+    compile.extendsFrom external
+}
+
 dependencies {
-    compile files("src/main/resources/javaassist/javassist.jar")
+    external files("src/main/resources/javaassist/javassist.jar")
+}
+
+jar {
+    from { configurations.external.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
