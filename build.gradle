@@ -13,30 +13,16 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.1.1'
     }
 }
 
-apply plugin: 'shadow'
-
-shadow {
-    classifier = 'shadowed'
-    artifactSet {
-        include 'enchantableblocks' // Mod's main package
-    }
-    relocation {
-        pattern = 'javassist'
-        shadedPattern = 'enchantableblocks.javassist'
-    }
-}
-
+apply plugin: 'forge'
 apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
-
-apply plugin: 'forge'
 
 group = 'enchantableblocks'
 version = "ENCH_BLOCKS_KEY"
@@ -61,18 +47,6 @@ artifacts {
         archives deobfJar
 }
 
-configurations {
-    external
-    compile.extendsFrom external
-}
-
 dependencies {
-    external files("src/main/resources/javaassist/javassist.jar")
+    compile files("src/main/resources/javaassist/javassist.jar")
 }
-
-jar {
-    from { configurations.external.collect { it.isDirectory() ? it : zipTree(it) } }
-}
-
-
-build.dependsOn shadowJar
