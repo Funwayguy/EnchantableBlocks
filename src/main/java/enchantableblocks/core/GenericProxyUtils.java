@@ -39,6 +39,12 @@ public class GenericProxyUtils
 				continue;
 			}
 			
+			if(Block.blockRegistry.getNameForObject(block).startsWith("minecraft:") && !block.getClass().getName().startsWith("net.minecraft.block"))
+			{
+				EnchantableBlocks.logger.log(Level.WARN, "Cannot enchant modified vanilla block: " + block.getLocalizedName() + "!");
+				continue;
+			}
+			
 			if(Item.getItemFromBlock(block).getClass() == ItemBlock.class && !block.getMaterial().isLiquid() && !blockGeneric.containsKey(block) && !Block.blockRegistry.getNameForObject(block).startsWith(EB_Settings.modID))
 			{
 				ArrayList<Field> failedVars = new ArrayList<Field>();

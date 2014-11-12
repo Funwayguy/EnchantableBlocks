@@ -68,7 +68,7 @@ public class EnchantableBlocks
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		//GenericProxyUtils.GenerateGenerics(); // Can safely be called again later to enable more blocks without issue (ReplaceItemBlocks must also be re-called)
+		GenericProxyUtils.GenerateGenerics(); // Can safely be called again later to enable more blocks without issue (ReplaceItemBlocks must also be re-called)
 		BlockEnchantment.Load();
 		AuxEnchantment.Load();
 	}
