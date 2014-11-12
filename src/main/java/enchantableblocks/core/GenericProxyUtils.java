@@ -34,7 +34,7 @@ public class GenericProxyUtils
 		{
 			Block block = (Block)Block.blockRegistry.getObject(blockKeys[keyIndex]);
 			
-			if(block == null || Item.getItemFromBlock(block) == null)
+			if(block == null || Item.getItemFromBlock(block) == null || !Block.blockRegistry.getNameForObject(block).startsWith("minecraft:"))
 			{
 				continue;
 			}
@@ -201,10 +201,17 @@ public class GenericProxyUtils
 					EnchantableBlocks.logger.log(Level.WARN, "Skipping block " + eBlock.getLocalizedName() + ", already has an ItemBlock!");
 					continue;
 				}
+				
 				try
 				{
-					String prefix = Block.blockRegistry.getNameForObject(block).split(":")[0];
-					GameRegistry.registerBlock(eBlock, ItemEnchantableBlock.class, Block.blockRegistry.getNameForObject(block).replaceFirst(prefix + ":", "") + "_enchanted");
+					String name = Block.blockRegistry.getNameForObject(block).split(":")[1] + "_enchanted";
+					
+					/*while(Block.blockRegistry.containsKey(EB_Settings.modID + ":" + name + "_enchanted"))
+					{
+						name = name + "_enchanted";
+					}*/
+					
+					GameRegistry.registerBlock(eBlock, ItemEnchantableBlock.class, name);
 					
 					if(Blocks.fire.getFlammability(block) > 0)
 					{
@@ -341,138 +348,6 @@ public class GenericProxyUtils
 		EnchantableBlocks.logger.log(Level.ERROR, failed);
 		return null;
 	}
-	
-	// Turns out this is a very bad idea! Replacing items breaks all previous code involved with the old copies, not an easy fix...
-	
-	/*@SuppressWarnings("unchecked")
-	public static void ReplaceItemBlocks()
-	{
-		Field field2 = null ;
-		Field field3 = null; // FML GameData instance
-		Field field4 = null; // Block registry in GameData
-		Field field5 = null; // Item registry in GameData (Need this for ItemBlock linking)
-		Field modifiers = null;
-
-		try
-		{
-			field2 = Items.class.getDeclaredField("shears");
-			field3 = GameData.class.getDeclaredField("mainData");
-			field4 = GameData.class.getDeclaredField("iBlockRegistry");
-			field5 = GameData.class.getDeclaredField("iItemRegistry");
-			modifiers = Field.class.getDeclaredField("modifiers");
-		} catch(NoSuchFieldException e)
-		{
-			try
-			{
-				field2 = Items.class.getDeclaredField("field_151097_aZ");
-				field3 = GameData.class.getDeclaredField("mainData");
-				field4 = GameData.class.getDeclaredField("iBlockRegistry");
-				field5 = GameData.class.getDeclaredField("iItemRegistry");
-				modifiers = Field.class.getDeclaredField("modifiers");
-			} catch(NoSuchFieldException e1)
-			{
-				e.printStackTrace();
-				e1.printStackTrace();
-				return;
-			} catch(SecurityException e1)
-			{
-				e.printStackTrace();
-				e1.printStackTrace();
-				return;
-			}
-		} catch(SecurityException e)
-		{
-			try
-			{
-				field2 = Items.class.getDeclaredField("field_151097_aZ");
-				field3 = GameData.class.getDeclaredField("mainData");
-				field4 = GameData.class.getDeclaredField("iBlockRegistry");
-				field5 = GameData.class.getDeclaredField("iItemRegistry");
-				modifiers = Field.class.getDeclaredField("modifiers");
-			} catch(NoSuchFieldException e1)
-			{
-				e.printStackTrace();
-				e1.printStackTrace();
-				return;
-			} catch(SecurityException e1)
-			{
-				e.printStackTrace();
-				e1.printStackTrace();
-				return;
-			}
-		}
-		
-		modifiers.setAccessible(true);
-		
-		try
-		{
-			modifiers.setInt(field2, field2.getModifiers() & ~Modifier.FINAL);
-			modifiers.setInt(field3, field3.getModifiers() & ~Modifier.FINAL);
-			modifiers.setInt(field4, field4.getModifiers() & ~Modifier.FINAL);
-			modifiers.setInt(field5, field5.getModifiers() & ~Modifier.FINAL);
-		} catch(IllegalArgumentException e1)
-		{
-			e1.printStackTrace();
-			return;
-		} catch(IllegalAccessException e1)
-		{
-			e1.printStackTrace();
-			return;
-		}
-		
-		field2.setAccessible(true);
-		field3.setAccessible(true);
-		field4.setAccessible(true);
-		field5.setAccessible(true);
-		
-		try
-		{
-			Method addRawObj = FMLControlledNamespacedRegistry.class.getDeclaredMethod("addObjectRaw", int.class, String.class, Object.class);
-			addRawObj.setAccessible(true);
-			
-			addRawObj.invoke(((FMLControlledNamespacedRegistry<Item>)field5.get(field3.get(null))), Item.getIdFromItem(Items.shears), Item.itemRegistry.getNameForObject(Items.shears), EnchantableBlocks.itemShears);
-			field2.set(null, EnchantableBlocks.itemShears);
-			
-			addRawObj.invoke(((FMLControlledNamespacedRegistry<Item>)field5.get(field3.get(null))), Block.getIdFromBlock(Blocks.enchanting_table), "minecraft:enchanting_table", new ItemEnchantableBlock(Blocks.enchanting_table, EnchantableBlocks.blockEnch));
-			addRawObj.invoke(((FMLControlledNamespacedRegistry<Item>)field5.get(field3.get(null))), Block.getIdFromBlock(Blocks.chest), "minecraft:chest", new ItemEnchantableBlock(Blocks.chest, EnchantableBlocks.blockChest));
-			addRawObj.invoke(((FMLControlledNamespacedRegistry<Item>)field5.get(field3.get(null))), Block.getIdFromBlock(Blocks.crafting_table), "minecraft:crafting_table", new ItemEnchantableBlock(Blocks.crafting_table, EnchantableBlocks.blockWorkbench));
-			addRawObj.invoke(((FMLControlledNamespacedRegistry<Item>)field5.get(field3.get(null))), Block.getIdFromBlock(Blocks.furnace), "minecraft:furnace", new ItemEnchantableBlock(Blocks.furnace, EnchantableBlocks.blockFurnace));
-			addRawObj.invoke(((FMLControlledNamespacedRegistry<Item>)field5.get(field3.get(null))), Block.getIdFromBlock(Blocks.lit_furnace), "minecraft:lit_furnace", new ItemEnchantableBlock(Blocks.lit_furnace, EnchantableBlocks.blockFurnaceOn));
-			
-			Set<Block> keySet = blockGeneric.keySet();
-			Iterator<Block> iterator = keySet.iterator();
-			
-			while(iterator.hasNext())
-			{
-				Block block = iterator.next();
-				Block eBlock = blockGeneric.get(block);
-				if(!(Item.getItemFromBlock(block) instanceof ItemEnchantableBlock))
-				{
-					addRawObj.invoke(((FMLControlledNamespacedRegistry<Item>)field5.get(field3.get(null))), Block.getIdFromBlock(block), Block.blockRegistry.getNameForObject(block), new ItemEnchantableBlock(block, eBlock));
-				}
-			}
-		} catch(NoSuchMethodException e)
-		{
-			e.printStackTrace();
-			return;
-		} catch(SecurityException e)
-		{
-			e.printStackTrace();
-			return;
-		} catch(InvocationTargetException e)
-		{
-			e.printStackTrace();
-			return;
-		} catch(IllegalAccessException e)
-		{
-			e.printStackTrace();
-			return;
-		} catch(IllegalArgumentException e)
-		{
-			e.printStackTrace();
-			return;
-		}
-	}*/
 	
 	public static Object GetWrappedValue(Object obj)
 	{
