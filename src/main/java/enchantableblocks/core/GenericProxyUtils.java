@@ -196,12 +196,19 @@ public class GenericProxyUtils
 			
 			if(Block.getIdFromBlock(eBlock) == -1)
 			{
-				String prefix = Block.blockRegistry.getNameForObject(block).split(":")[0];
-				GameRegistry.registerBlock(eBlock, ItemEnchantableBlock.class, Block.blockRegistry.getNameForObject(block).replaceFirst(prefix + ":", "") + "_enchanted");
-				
-				if(Blocks.fire.getFlammability(block) > 0)
+				try
 				{
-					Blocks.fire.setFireInfo(eBlock, Blocks.fire.getEncouragement(block), Blocks.fire.getFlammability(block));
+					String prefix = Block.blockRegistry.getNameForObject(block).split(":")[0];
+					GameRegistry.registerBlock(eBlock, ItemEnchantableBlock.class, Block.blockRegistry.getNameForObject(block).replaceFirst(prefix + ":", "") + "_enchanted");
+					
+					if(Blocks.fire.getFlammability(block) > 0)
+					{
+						Blocks.fire.setFireInfo(eBlock, Blocks.fire.getEncouragement(block), Blocks.fire.getFlammability(block));
+					}
+				} catch(Exception e)
+				{
+					EnchantableBlocks.logger.log(Level.ERROR, "Failed to register enchantable variation of block " + block.getLocalizedName(), e);
+					continue;
 				}
 			}
 		}
