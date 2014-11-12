@@ -196,6 +196,11 @@ public class GenericProxyUtils
 			
 			if(Block.getIdFromBlock(eBlock) == -1)
 			{
+				if(Item.getItemFromBlock(eBlock) != null)
+				{
+					EnchantableBlocks.logger.log(Level.WARN, "Skipping block " + eBlock.getLocalizedName() + ", already has an ItemBlock!");
+					continue;
+				}
 				try
 				{
 					String prefix = Block.blockRegistry.getNameForObject(block).split(":")[0];
