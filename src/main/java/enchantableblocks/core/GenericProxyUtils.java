@@ -34,7 +34,7 @@ public class GenericProxyUtils
 		{
 			Block block = (Block)Block.blockRegistry.getObject(blockKeys[keyIndex]);
 			
-			if(block == null || Item.getItemFromBlock(block) == null || !Block.blockRegistry.getNameForObject(block).startsWith("minecraft:"))
+			if(block == null || Item.getItemFromBlock(block) == null || Block.blockRegistry.getIDForObject(block) == -1 || !Block.blockRegistry.getNameForObject(block).startsWith("minecraft:"))
 			{
 				continue;
 			}
