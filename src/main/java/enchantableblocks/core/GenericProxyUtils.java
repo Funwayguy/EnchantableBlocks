@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 import javassist.util.proxy.MethodFilter;
 import javassist.util.proxy.ProxyFactory;
@@ -197,7 +196,8 @@ public class GenericProxyUtils
 			
 			if(Block.getIdFromBlock(eBlock) == -1)
 			{
-				GameRegistry.registerBlock(eBlock, ItemEnchantableBlock.class, Block.blockRegistry.getNameForObject(block).replaceFirst("minecraft:", "") + "_enchanted");
+				String prefix = Block.blockRegistry.getNameForObject(block).split(":")[0];
+				GameRegistry.registerBlock(eBlock, ItemEnchantableBlock.class, Block.blockRegistry.getNameForObject(block).replaceFirst(prefix + ":", "") + "_enchanted");
 				
 				if(Blocks.fire.getFlammability(block) > 0)
 				{
