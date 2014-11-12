@@ -205,9 +205,6 @@ public class BlockEnchantedGeneric extends Block implements ITileEntityProvider
     		{
     			this.enchCache.remove(this.enchCache.get(x + "," + y + "," + z));
     		}
-    	} else
-    	{
-    		System.out.println("No tile to retrieve enchantments!");
     	}
 		
 		proxyBlock.breakBlock(world, x, y, z, block, meta);

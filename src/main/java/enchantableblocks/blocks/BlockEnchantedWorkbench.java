@@ -179,9 +179,6 @@ public class BlockEnchantedWorkbench extends BlockWorkbench implements ITileEnti
     		{
     			this.enchCache.remove(this.enchCache.get(x + "," + y + "," + z));
     		}
-    	} else
-    	{
-    		System.out.println("No tile to retrieve enchantments!");
     	}
 		
 		super.breakBlock(world, x, y, z, block, meta);

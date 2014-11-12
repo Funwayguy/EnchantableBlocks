@@ -78,9 +78,6 @@ public class BlockEnchantedFurnace extends BlockFurnace
         		enchCache.remove(x + "," + y + "," + z);
         		
         		break;
-        	} else
-        	{
-        		System.out.println("No cached enchantments");
         	}
         }
         
@@ -219,9 +216,6 @@ public class BlockEnchantedFurnace extends BlockFurnace
 	    		{
 	    			this.enchCache.remove(this.enchCache.get(x + "," + y + "," + z));
 	    		}
-	    	} else
-	    	{
-	    		System.out.println("No tile to retrieve enchantments!");
 	    	}
 			
 			// --- DEFAULT FURNACE ---

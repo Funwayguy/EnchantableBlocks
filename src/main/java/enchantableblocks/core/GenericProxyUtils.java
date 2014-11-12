@@ -28,12 +28,12 @@ public class GenericProxyUtils
 	
 	public static void GenerateGenerics()
 	{
-		Set keySet = Block.blockRegistry.getKeys();
-		Iterator iterator = keySet.iterator();
+		Set<String> keySet = Block.blockRegistry.getKeys();
+		String[] blockKeys = keySet.toArray(new String[keySet.size()]);
 		
-		while(iterator.hasNext())
+		for(int keyIndex = 0; keyIndex < blockKeys.length; keyIndex++)
 		{
-			Block block = (Block)Block.blockRegistry.getObject(iterator.next());
+			Block block = (Block)Block.blockRegistry.getObject(blockKeys[keyIndex]);
 			
 			if(block == null || Item.getItemFromBlock(block) == null)
 			{
@@ -188,11 +188,11 @@ public class GenericProxyUtils
 		EnchantableBlocks.logger.log(Level.INFO, "Detected " + blockGeneric.size() + " blocks capable of enchantments");
 		
 		Set<Block> genericSet = blockGeneric.keySet();
-		Iterator<Block> gIterator = genericSet.iterator();
+		Block[] genericKeys = genericSet.toArray(new Block[genericSet.size()]);
 		
-		while(gIterator.hasNext())
+		for(int keyIndex = 0; keyIndex < genericKeys.length; keyIndex++)
 		{
-			Block block = gIterator.next();
+			Block block = genericKeys[keyIndex];
 			Block eBlock = blockGeneric.get(block);
 			
 			if(Block.getIdFromBlock(eBlock) == -1)

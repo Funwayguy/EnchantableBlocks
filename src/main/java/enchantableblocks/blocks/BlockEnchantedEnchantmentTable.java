@@ -167,9 +167,6 @@ public class BlockEnchantedEnchantmentTable extends net.minecraft.block.BlockEnc
     		{
     			this.enchCache.remove(this.enchCache.get(x + "," + y + "," + z));
     		}
-    	} else
-    	{
-    		System.out.println("No tile to retrieve enchantments!");
     	}
 		
 		super.breakBlock(world, x, y, z, block, meta);

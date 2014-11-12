@@ -186,9 +186,6 @@ public class BlockEnchantedChest extends BlockChest
         		enchCache.remove(x + "," + y + "," + z);
         		
         		break;
-        	} else
-        	{
-        		System.out.println("No cached enchantments");
         	}
         }
         
@@ -237,9 +234,6 @@ public class BlockEnchantedChest extends BlockChest
     		{
     			this.enchCache.remove(this.enchCache.get(x + "," + y + "," + z));
     		}
-    	} else
-    	{
-    		System.out.println("No tile to retrieve enchantments!");
     	}
 		
 		super.breakBlock(world, x, y, z, block, meta);

@@ -2,6 +2,8 @@ package enchantableblocks.blocks.tile;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import org.apache.logging.log4j.Level;
+import enchantableblocks.core.EnchantableBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -39,7 +41,6 @@ public class TileEntityEnchantedGeneric extends TileEntity
 	{
 		if(actualTile == this)
 		{
-			System.out.println("Reloading tile...");
 			actualTile = null;
 			World world = this.getWorldObj();
 			
@@ -52,24 +53,22 @@ public class TileEntityEnchantedGeneric extends TileEntity
 				
 				if(tile != null)
 				{
-					System.out.println("Switching tile entities...");
 					this.invalidate();
 					
 					if(cachedTags != null)
 					{
 						tile.readFromNBT(cachedTags);
-						System.out.println("Loaded cached tags into tile at (" + tile.xCoord + "," + tile.yCoord + "," + tile.zCoord + ")");
 					}
 					
 					world.addTileEntity(tile);
 					world.getChunkFromBlockCoords(tile.xCoord, tile.zCoord).addTileEntity(tile);
 				} else
 				{
-					System.out.println("Block failed to create a new tile entity!");
+					EnchantableBlocks.logger.log(Level.WARN, "Block failed to create a new tile entity!");
 				}
 			} else
 			{
-				System.out.println("Block has no tiles accociated with it!");
+				EnchantableBlocks.logger.log(Level.WARN, "Block has no tiles accociated with it!");
 			}
 		} else if(actualTile != null)
 		{

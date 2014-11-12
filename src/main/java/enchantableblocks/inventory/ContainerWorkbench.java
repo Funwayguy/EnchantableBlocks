@@ -66,10 +66,7 @@ public class ContainerWorkbench extends Container
     					hype = lvl;
     				}
     			}
-    		} else
-        	{
-        		System.out.println("No enchantments to retrieve!");
-        	}
+    		}
         }
         
         this.addSlotToContainer(new SlotEnchantedCrafting(p_i1808_1_.player, this.craftMatrix, this.craftResult, 0, 124, 35, 0.1F * doubleUp, 0.1F * efficiency, 0.1F * hype, this));
