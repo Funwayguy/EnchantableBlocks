@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import enchantableblocks.blocks.BlockEnchantedChest;
 import enchantableblocks.blocks.BlockEnchantedEnchantmentTable;
@@ -76,6 +77,8 @@ public class EnchantableBlocks
 	public void RegisterItems()
 	{
 		itemShears = new ItemEnchantedShears().setUnlocalizedName("shears").setTextureName("shears");
+		
+		GameRegistry.registerItem(itemShears, "enchatedShears");
 	}
 	
 	public void RegisterBlocks()

@@ -9,7 +9,7 @@ public class ShearEnchantFortune extends AuxEnchantment
 	public ShearEnchantFortune(int id, int weight)
 	{
 		super(id, weight);
-		this.setName("fortune");
+		this.setName("lootBonusDigger");
 	}
 
     public boolean canApply(ItemStack stack)

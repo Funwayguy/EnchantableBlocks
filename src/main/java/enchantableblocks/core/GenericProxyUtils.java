@@ -34,6 +34,8 @@ public class GenericProxyUtils
 		{
 			Block block = (Block)Block.blockRegistry.getObject(blockKeys[keyIndex]);
 			
+			// TODO: Custom ItemBlock support/metadata support
+			
 			if(block == null || Item.getItemFromBlock(block) == null || Block.blockRegistry.getIDForObject(block) == -1 || block instanceof ITileEntityProvider)
 			{
 				continue;
@@ -90,7 +92,7 @@ public class GenericProxyUtils
 						BEG.proxyBlock = proxyBlock;
 					} catch(Exception e)
 					{
-						Block[] bs = ForceConstructor(block, factory);
+						Block[] bs = ForceBlockConstructor(block, factory);
 						copyBlock = bs[0];
 						proxyBlock = bs[1];
 						
@@ -232,7 +234,7 @@ public class GenericProxyUtils
 		}
 	}
 	
-	public static Block[] ForceConstructor(Block block, ProxyFactory factory)
+	public static Block[] ForceBlockConstructor(Block block, ProxyFactory factory)
 	{
 		Block[] copy = new Block[2];
 		Constructor[] constructors = block.getClass().getDeclaredConstructors();
@@ -249,7 +251,7 @@ public class GenericProxyUtils
 				{
 					// Even if this returns the wrong parameters it will be replaced later
 					// It's only required to instantiate the object with non-null parameters
-					objs[c] = FindConstructorObj(block, prams[c]);
+					objs[c] = FindBlockConstructorObj(block, prams[c]);
 				}
 				copy[0] = (Block)constructors[i].newInstance(objs);
 				BlockEnchantedGeneric BEG = new BlockEnchantedGeneric(block);
@@ -266,7 +268,7 @@ public class GenericProxyUtils
 		return copy;
 	}
 	
-	public static Object FindConstructorObj(Block block, Class clazz)
+	public static Object FindBlockConstructorObj(Block block, Class clazz)
 	{
 		if(PRIM_TO_WRAP.containsKey(clazz))
 		{

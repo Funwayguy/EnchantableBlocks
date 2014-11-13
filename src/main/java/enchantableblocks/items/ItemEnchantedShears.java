@@ -37,7 +37,7 @@ public class ItemEnchantedShears extends ItemShears
             IShearable target = (IShearable)entity;
             if (target.isShearable(itemstack, entity.worldObj, (int)entity.posX, (int)entity.posY, (int)entity.posZ))
             {
-            	int fortuneLvl = EnchantmentHelper.getEnchantmentLevel(AuxEnchantment.fortune.effectId, itemstack);
+            	int fortuneLvl = EnchantmentHelper.getEnchantmentLevel(AuxEnchantment.shearFortune.effectId, itemstack);
             	int threadingLvl = EnchantmentHelper.getEnchantmentLevel(AuxEnchantment.threading.effectId, itemstack);
             	int tapestryLvl = EnchantmentHelper.getEnchantmentLevel(AuxEnchantment.tapestry.effectId, itemstack);
                 ArrayList<ItemStack> drops = target.onSheared(itemstack, entity.worldObj, (int)entity.posX, (int)entity.posY, (int)entity.posZ, fortuneLvl);
