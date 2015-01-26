@@ -29,6 +29,7 @@ public class GenericProxyUtils
 	
 	public static void GenerateGenerics()
 	{
+		@SuppressWarnings("unchecked")
 		Set<String> keySet = Block.blockRegistry.getKeys();
 		String[] blockKeys = keySet.toArray(new String[keySet.size()]);
 		
@@ -129,6 +130,12 @@ public class GenericProxyUtils
 									{
 										continue;
 									}
+									
+									if(field == null || field.isAnnotationPresent(SideOnly.class) && field.getAnnotation(SideOnly.class).value() != (EnchantableBlocks.proxy.isClient()? Side.CLIENT : Side.SERVER))
+									{
+										continue;
+									}
+									
 									field.setAccessible(true);
 									modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 									field.set(copyBlock, field.get(block));
@@ -152,6 +159,12 @@ public class GenericProxyUtils
 							{
 								continue;
 							}
+							
+							if(field == null || field.isAnnotationPresent(SideOnly.class) && field.getAnnotation(SideOnly.class).value() != (EnchantableBlocks.proxy.isClient()? Side.CLIENT : Side.SERVER))
+							{
+								continue;
+							}
+							
 							field.setAccessible(true);
 							modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 							
@@ -249,7 +262,7 @@ public class GenericProxyUtils
 			
 			for(Class<?> c : prams)
 			{
-				if(c == null || (c.isAnnotationPresent(SideOnly.class) && c.getAnnotation(SideOnly.class).value() == Side.CLIENT))
+				if(c == null || (c.isAnnotationPresent(SideOnly.class) && c.getAnnotation(SideOnly.class).value() != (EnchantableBlocks.proxy.isClient()? Side.CLIENT : Side.SERVER)))
 				{
 					continue;
 				}
@@ -313,7 +326,7 @@ public class GenericProxyUtils
 							continue;
 						}
 						
-						if(f == null || f.isAnnotationPresent(SideOnly.class) && f.getAnnotation(SideOnly.class).value() == Side.CLIENT)
+						if(f == null || f.isAnnotationPresent(SideOnly.class) && f.getAnnotation(SideOnly.class).value() != (EnchantableBlocks.proxy.isClient()? Side.CLIENT : Side.SERVER))
 						{
 							continue;
 						}
