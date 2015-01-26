@@ -16,6 +16,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import org.apache.logging.log4j.Level;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import enchantableblocks.blocks.BlockEnchantedGeneric;
 import enchantableblocks.handlers.BlockMethodHandler;
 import enchantableblocks.items.ItemEnchantableBlock;
@@ -115,7 +117,7 @@ public class GenericProxyUtils
 					
 					if(block.getClass() != Block.class)
 					{
-						Class sClazz = block.getClass();
+						Class<?> sClazz = block.getClass();
 						
 						while(sClazz != null && sClazz != Block.class)
 						{
@@ -237,13 +239,21 @@ public class GenericProxyUtils
 	public static Block[] ForceBlockConstructor(Block block, ProxyFactory factory)
 	{
 		Block[] copy = new Block[2];
-		Constructor[] constructors = block.getClass().getDeclaredConstructors();
+		Constructor<?>[] constructors = block.getClass().getDeclaredConstructors();
 		
 		for(int i = 0; i < constructors.length; i++)
 		{
 			constructors[i].setAccessible(true);
-			Class[] prams = constructors[i].getParameterTypes();
+			Class<?>[] prams = constructors[i].getParameterTypes();
 			Object[] objs = new Object[prams.length];
+			
+			for(Class<?> c : prams)
+			{
+				if(c == null || (c.isAnnotationPresent(SideOnly.class) && c.getAnnotation(SideOnly.class).value() == Side.CLIENT))
+				{
+					continue;
+				}
+			}
 			
 			try
 			{
@@ -268,7 +278,7 @@ public class GenericProxyUtils
 		return copy;
 	}
 	
-	public static Object FindBlockConstructorObj(Block block, Class clazz)
+	public static Object FindBlockConstructorObj(Block block, Class<?> clazz)
 	{
 		if(PRIM_TO_WRAP.containsKey(clazz))
 		{
@@ -290,7 +300,7 @@ public class GenericProxyUtils
 		
 		if(block.getClass() != Block.class)
 		{
-			Class sClazz = block.getClass();
+			Class<?> sClazz = block.getClass();
 			
 			while(sClazz != null && sClazz != Block.class)
 			{
@@ -299,6 +309,11 @@ public class GenericProxyUtils
 					try
 					{
 						if(Modifier.isStatic(f.getModifiers()))
+						{
+							continue;
+						}
+						
+						if(f == null || f.isAnnotationPresent(SideOnly.class) && f.getAnnotation(SideOnly.class).value() == Side.CLIENT)
 						{
 							continue;
 						}
