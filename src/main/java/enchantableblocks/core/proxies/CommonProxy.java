@@ -55,7 +55,7 @@ public class CommonProxy implements IGuiHandler
 	{
 		if(ID == 0)
 		{
-			return new GuiEnchantment(player.inventory, world, x, y, z, "Enchant (Blocks)");
+			return new GuiEnchantment(player.inventory, world, x, y, z, null);
 		} else if(ID == 1)
 		{
 			return new GuiCrafting(player.inventory, world, x, y, z);

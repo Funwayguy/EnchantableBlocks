@@ -14,7 +14,6 @@ import enchantableblocks.inventory.ContainerWorkbench;
 public class GuiCrafting extends GuiContainer
 {
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation("textures/gui/container/crafting_table.png");
-    private static final String __OBFID = "CL_00000750";
 
     public GuiCrafting(InventoryPlayer p_i1084_1_, World p_i1084_2_, int p_i1084_3_, int p_i1084_4_, int p_i1084_5_)
     {

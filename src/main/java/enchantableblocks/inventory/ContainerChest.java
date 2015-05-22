@@ -11,7 +11,6 @@ public class ContainerChest extends Container
     private IInventory lowerChestInventory;
     private int numRows;
     public int localPg = 0;
-    private static final String __OBFID = "CL_00001742";
 
     public ContainerChest(IInventory p_i1806_1_, IInventory p_i1806_2_)
     {

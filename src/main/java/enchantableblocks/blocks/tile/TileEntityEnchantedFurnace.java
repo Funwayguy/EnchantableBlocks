@@ -171,7 +171,8 @@ public class TileEntityEnchantedFurnace extends TileEntityFurnace
         {
         	if(hype > 0 && !this.getWorldObj().isRemote && this.getWorldObj().rand.nextFloat() < hype*0.1F)
         	{
-        		List<EntityPlayer> playerList = this.getWorldObj().getEntitiesWithinAABB(EntityPlayer.class, this.getBlockType().getCollisionBoundingBoxFromPool(this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord).expand(5D, 5D, 5D));
+        		@SuppressWarnings("unchecked")
+				List<EntityPlayer> playerList = this.getWorldObj().getEntitiesWithinAABB(EntityPlayer.class, this.getBlockType().getCollisionBoundingBoxFromPool(this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord).expand(5D, 5D, 5D));
         		
         		Iterator<EntityPlayer> iterator = playerList.iterator();
         		

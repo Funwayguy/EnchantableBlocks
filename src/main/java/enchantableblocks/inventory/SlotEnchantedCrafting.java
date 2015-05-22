@@ -52,7 +52,8 @@ public class SlotEnchantedCrafting extends SlotCrafting
         
         if(!player.worldObj.isRemote && player.worldObj.rand.nextFloat() < hype)
         {
-        	List<EntityPlayer> playerList = player.worldObj.getEntitiesWithinAABB(EntityPlayer.class, player.boundingBox.expand(5D, 5D, 5D));
+        	@SuppressWarnings("unchecked")
+			List<EntityPlayer> playerList = player.worldObj.getEntitiesWithinAABB(EntityPlayer.class, player.boundingBox.expand(5D, 5D, 5D));
         	Iterator<EntityPlayer> iterator = playerList.iterator();
         	
         	while(iterator.hasNext())

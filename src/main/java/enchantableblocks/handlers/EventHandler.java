@@ -58,7 +58,7 @@ public class EventHandler
 			}
 		}
 		
-		if(event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && (event.world.getBlock(event.x, event.y, event.z) == Blocks.enchanting_table || event.world.getBlock(event.x, event.y, event.z) == EnchantableBlocks.blockEnch) && !event.world.isRemote)
+		if(event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && (event.world.getBlock(event.x, event.y, event.z) == Blocks.enchanting_table || event.world.getBlock(event.x, event.y, event.z) == EnchantableBlocks.blockEnch) && !event.world.isRemote && !event.entityPlayer.isSneaking())
 		{
 			event.entityPlayer.openGui(EB_Settings.modID, 0, event.world, event.x, event.y, event.z);
 			event.setCanceled(true);

@@ -37,7 +37,6 @@ public class ContainerEnchantment extends Container
     /** SlotEnchantmentTable object with ItemStack to be enchanted */
     public IInventory tableInventory = new InventoryBasic("Enchant", true, 1)
     {
-        private static final String __OBFID = "CL_00001746";
         /**
          * Returns the maximum stack size for a inventory slot.
          */
@@ -65,7 +64,6 @@ public class ContainerEnchantment extends Container
     public long nameSeed;
     /** 3-member array storing the enchantment levels of each slot */
     public int[] enchantLevels = new int[3];
-    private static final String __OBFID = "CL_00001745";
     
     public float gabeSale = 1.0F; // The actual % of cost you pay
 
@@ -77,7 +75,6 @@ public class ContainerEnchantment extends Container
         this.posZ = z;
         this.addSlotToContainer(new Slot(this.tableInventory, 0, 25, 47)
         {
-            private static final String __OBFID = "CL_00001747";
             /**
              * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
              */
@@ -281,7 +278,8 @@ public class ContainerEnchantment extends Container
             if (!this.worldPointer.isRemote)
             {
             	int saleLevel = MathHelper.floor_float(this.enchantLevels[p_75140_2_] / gabeSale);
-                List list = EnchantmentHelper.buildEnchantmentList(this.rand, enchantStack, saleLevel);
+                @SuppressWarnings("unchecked")
+				List<EnchantmentData> list = EnchantmentHelper.buildEnchantmentList(this.rand, enchantStack, saleLevel);
                 boolean flag = enchantStack.getItem() == Items.book;
 
                 if (list != null)
@@ -295,7 +293,6 @@ public class ContainerEnchantment extends Container
 
                     int j = flag && list.size() > 1 ? this.rand.nextInt(list.size()) : -1;
                     
-                    //if(itemstack.getItem() instanceof ItemEnchantableBlock && ((ItemEnchantableBlock)itemstack.getItem()).getEnchantedBlock() != ((ItemBlock)itemstack.getItem()).field_150939_a)
                 	if(itemstack != enchantStack)
                     {
                 		itemstack = enchantStack;

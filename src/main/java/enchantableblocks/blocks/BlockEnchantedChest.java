@@ -1,19 +1,12 @@
 package enchantableblocks.blocks;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import enchantableblocks.blocks.tile.TileEntityEnchantedChest;
-import enchantableblocks.core.EnchantableBlocks;
-import enchantableblocks.enchantments.blocks.BlockEnchantment;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -22,6 +15,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import enchantableblocks.blocks.tile.TileEntityEnchantedChest;
+import enchantableblocks.core.EnchantableBlocks;
+import enchantableblocks.enchantments.blocks.BlockEnchantment;
 
 public class BlockEnchantedChest extends BlockChest
 {
@@ -150,93 +146,6 @@ public class BlockEnchantedChest extends BlockChest
 
             return true;
         }
-    }
-	
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
-    {
-        ArrayList<ItemStack> ret = super.getDrops(world, x, y, z, metadata, fortune);
-        boolean flag = true;
-        Iterator<ItemStack> iterator = ret.iterator();
-        
-        while(iterator.hasNext())
-        {
-        	ItemStack stack = iterator.next();
-        	
-        	if(stack.getItem() == Item.getItemFromBlock(this) && enchCache.containsKey(x + "," + y + "," + z))
-        	{
-        		NBTTagList tagList = enchCache.get(x + "," + y + "," + z);
-        		
-        		for(int i = 0; i < tagList.tagCount(); i++)
-    			{
-    				NBTTagCompound enchTag = tagList.getCompoundTagAt(i);
-    				short id = enchTag.getShort("id");
-    				short lvl = enchTag.getShort("lvl");
-    				
-    				stack.addEnchantment(Enchantment.enchantmentsList[id], lvl);
-    				
-    				if(id == BlockEnchantment.retention.effectId && itemCache.containsKey(x + "," + y + "," + z))
-    				{
-    					flag = false;
-    					stack.getTagCompound().setTag("Items", itemCache.get(x + "," + y + "," + z));
-    					itemCache.remove(x + "," + y + "," + z);
-    					invCache.remove(x + "," + y + "," + z);
-    				}
-    			}
-        		
-        		enchCache.remove(x + "," + y + "," + z);
-        		
-        		break;
-        	}
-        }
-        
-        if(flag && invCache.containsKey(x + "," + y + "," + z))
-        {
-        	for(ItemStack stack : invCache.get(x + "," + y + "," + z))
-        	{
-        		ret.add(stack);
-        	}
-        	
-        	invCache.remove(x + "," + y + "," + z);
-        }
-        
-        return ret;
-    }
-	
-	public void breakBlock(World world, int x, int y, int z, Block block, int meta)
-    {
-		TileEntityEnchantedChest tile = (TileEntityEnchantedChest)world.getTileEntity(x, y, z);
-		
-		if(tile != null)
-    	{
-    		NBTTagCompound tags = new NBTTagCompound();
-    		tile.writeToNBT(tags);
-    		
-    		if(tags.hasKey("ench") && tags.getTagList("ench", 10).tagCount() > 0)
-    		{
-    			NBTTagList tagList = tags.getTagList("ench", 10);
-    			enchCache.put(x + "," + y + "," + z, tagList);
-    			
-    			for(int i = 0; i < tagList.tagCount(); i++)
-    			{
-    				NBTTagCompound enchTag = tagList.getCompoundTagAt(i);
-    				short id = enchTag.getShort("id");
-    				
-    				if(id == BlockEnchantment.retention.effectId)
-    				{
-    					//stack.getTagCompound().setTag("Items", tags.getTagList("Items", 10)); // Transfers inventory to item's NBT
-    					itemCache.put(x + "," + y + "," + z, tags.getTagList("Items", 10)); // Transfers inventory to itemCache
-    					invCache.put(x + "," + y + "," + z, tile.enchChestContents);
-    					tags.removeTag("Items"); // Delete items from memory
-    					tile.enchChestContents = new ItemStack[63]; // Delete items from inventory
-    				}
-    			}
-    		} else if(this.enchCache.containsKey(x + "," + y + "," + z))
-    		{
-    			this.enchCache.remove(this.enchCache.get(x + "," + y + "," + z));
-    		}
-    	}
-		
-		super.breakBlock(world, x, y, z, block, meta);
     }
 	
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)

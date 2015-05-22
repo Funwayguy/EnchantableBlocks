@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import enchantableblocks.blocks.BlockEnchantedChest;
 import enchantableblocks.enchantments.blocks.BlockEnchantment;
 
-public class TileEntityEnchantedChest extends TileEntityChest
+public class TileEntityEnchantedChest extends TileEntityChest implements ITileRetention
 {
 	 /**New ItemStack array used in place of 'TileEntityChest.chestContents'.
 	  * Original stack array should not be used in anyway through this class

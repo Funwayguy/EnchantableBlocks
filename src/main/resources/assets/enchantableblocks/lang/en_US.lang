@@ -10,3 +10,5 @@ enchantment.tapestry=Tapestry
 enchantment.threading=Threading
 
 itemGroup.enchantableBlocks=Enchantable Blocks
+
+item.block_enchanter=Block Enchanter

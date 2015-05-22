@@ -1,11 +1,20 @@
 package enchantableblocks.core;
 
-import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import org.apache.logging.log4j.Logger;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import enchantableblocks.blocks.BlockEnchantedChest;
 import enchantableblocks.blocks.BlockEnchantedEnchantmentTable;
 import enchantableblocks.blocks.BlockEnchantedFurnace;
@@ -19,16 +28,9 @@ import enchantableblocks.core.proxies.CommonProxy;
 import enchantableblocks.enchantments.blocks.BlockEnchantment;
 import enchantableblocks.enchantments.items.AuxEnchantment;
 import enchantableblocks.handlers.ConfigHandler;
+import enchantableblocks.items.ItemBlockEnchanter;
 import enchantableblocks.items.ItemEnchantableBlock;
 import enchantableblocks.items.ItemEnchantedShears;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = EB_Settings.modID, name = EB_Settings.name, version = EB_Settings.version)
 public class EnchantableBlocks
@@ -42,6 +44,7 @@ public class EnchantableBlocks
 	public static Block blockFurnaceOn;
 	
 	public static Item itemShears;
+	public static Item itemEnchanter;
 	
 	public static CreativeTabs creativeTab = new CreativeTabEnchantables("enchantableblocks");
 	
@@ -69,7 +72,8 @@ public class EnchantableBlocks
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		GenericProxyUtils.GenerateGenerics(); // Can safely be called again later to enable more blocks without issue (ReplaceItemBlocks must also be re-called)
+		GenericProxyUtils.ScanForEnchantables();
+		
 		BlockEnchantment.Load();
 		AuxEnchantment.Load();
 	}
@@ -79,6 +83,12 @@ public class EnchantableBlocks
 		itemShears = new ItemEnchantedShears().setUnlocalizedName("shears").setTextureName("shears");
 		
 		GameRegistry.registerItem(itemShears, "enchatedShears");
+		
+		itemEnchanter = new ItemBlockEnchanter();
+		
+		GameRegistry.registerItem(itemEnchanter, "block_enchanter");
+		
+		GameRegistry.addShapedRecipe(new ItemStack(itemEnchanter), " DE", " OD", "O  ", 'O', new ItemStack(Blocks.obsidian), 'D', new ItemStack(Items.diamond), 'E', new ItemStack(Items.ender_eye));
 	}
 	
 	public void RegisterBlocks()
@@ -93,6 +103,7 @@ public class EnchantableBlocks
 		GenericProxyUtils.blockGeneric.put(Blocks.crafting_table, blockWorkbench);
 		GenericProxyUtils.blockGeneric.put(Blocks.furnace, blockFurnace);
 		GenericProxyUtils.blockGeneric.put(Blocks.lit_furnace, blockFurnaceOn);
+		GenericProxyUtils.blockGeneric.put(Blocks.enchanting_table, blockEnch);
 		
 		GameRegistry.registerTileEntity(TileEntityEnchantedChest.class, "enchantedChest");
 		GameRegistry.registerTileEntity(TileEntityEnchantedFurnace.class, "enchantedFurnace");

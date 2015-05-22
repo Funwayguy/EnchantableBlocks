@@ -25,7 +25,6 @@ public class GuiChest extends GuiContainer
      * window height is calculated with these values; the more rows, the heigher
      */
     private int inventoryRows;
-    private static final String __OBFID = "CL_00000749";
 
     public GuiChest(IInventory p_i1083_1_, IInventory p_i1083_2_)
     {
@@ -42,7 +41,8 @@ public class GuiChest extends GuiContainer
         chestContainer = (ContainerChest)this.inventorySlots;
     }
     
-    public void initGui()
+    @SuppressWarnings("unchecked")
+	public void initGui()
     {
     	super.initGui();
     	
